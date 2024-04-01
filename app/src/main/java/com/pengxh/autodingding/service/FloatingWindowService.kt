@@ -48,7 +48,7 @@ class FloatingWindowService : Service() {
         windowManager?.addView(view, floatLayoutParams)
 
         view.setOnClickListener {
-            "无实际功能，仅为绕过Android 10+系统打卡之后无法回到桌面的问题".show(this)
+            "无实际功能，仅为绕过Android 10+系统哈没哈没哈之后无法回到桌面的问题".show(this)
         }
     }
 }

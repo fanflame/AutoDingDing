@@ -39,28 +39,13 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>() {
 
     override fun setupTopBarLayout() {
         binding.rootView.initImmersionBar(this, false, R.color.colorAppThemeLight)
-        binding.titleView.setTitle("自动打卡")
+        binding.titleView.setTitle("自动")
     }
 
     override fun initOnCreate(savedInstanceState: Bundle?) {
         if (!isAppAvailable(Constant.DING_DING)) {
             showAlertDialog()
             return
-        }
-
-        val isFirst = SaveKeyValues.getValue("isFirst", true) as Boolean
-        if (isFirst) {
-            AlertMessageDialog.Builder()
-                .setContext(this)
-                .setTitle("温馨提醒")
-                .setMessage("本软件仅供内部使用，严禁商用或者用作其他非法用途")
-                .setPositiveButton("知道了")
-                .setOnDialogButtonClickListener(object :
-                    AlertMessageDialog.OnDialogButtonClickListener {
-                    override fun onConfirmClick() {
-                        SaveKeyValues.putValue("isFirst", false)
-                    }
-                }).build().show()
         }
     }
 
@@ -78,7 +63,7 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>() {
                 } else {
                     showAlertDialog()
                 }
-                binding.titleView.setTitle("自动打卡")
+                binding.titleView.setTitle("自动")
             } else if (itemId == R.id.nav_settings) {
                 binding.viewPager.currentItem = 1
                 binding.titleView.setTitle("其他设置")
@@ -103,7 +88,7 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>() {
                 menuItem = binding.bottomNavigation.menu.getItem(position)
                 menuItem!!.isChecked = true
                 if (position == 0) {
-                    binding.titleView.setTitle("自动打卡")
+                    binding.titleView.setTitle("自动")
                 } else {
                     binding.titleView.setTitle("其他设置")
                 }
@@ -121,7 +106,7 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>() {
         AlertMessageDialog.Builder()
             .setContext(this)
             .setTitle("温馨提醒")
-            .setMessage("手机没有安装《钉钉》软件，无法自动打卡")
+            .setMessage("手机没有安装《钉钉》软件，无法自动哈没哈没哈")
             .setPositiveButton("知道了")
             .setOnDialogButtonClickListener(object :
                 AlertMessageDialog.OnDialogButtonClickListener {

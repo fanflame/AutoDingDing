@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/v"
-                    android:text="上班打卡"
+                    android:text="上班"
                     android:textColor="@color/white" />
 
                 <ImageView
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/vv"
-                    android:text="下班打卡"
+                    android:text="下班"
                     android:textColor="@color/white" />
 
                 <ImageView

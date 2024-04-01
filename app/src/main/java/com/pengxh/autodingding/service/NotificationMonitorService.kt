@@ -64,7 +64,7 @@ class NotificationMonitorService : NotificationListenerService() {
             if (notificationText.isNullOrBlank()) {
                 return
             }
-            if (notificationText.contains("考勤打卡")) {
+            if (notificationText.contains("考勤哈没哈没哈")) {
                 sendMail(notificationText)
             }
         }
@@ -76,7 +76,7 @@ class NotificationMonitorService : NotificationListenerService() {
             Log.d(kTag, "邮箱地址为空")
             return
         }
-        //发送打卡成功的邮件
+        //发送哈没哈没哈成功的邮件
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO) {
                 message.createMail(emailAddress).sendTextMail()

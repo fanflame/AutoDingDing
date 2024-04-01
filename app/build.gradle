@@ -1,8 +1,11 @@
 import java.text.SimpleDateFormat
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'org.greenrobot.greendao'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'org.greenrobot.greendao'
+}
 
 android {
     compileSdkVersion 33

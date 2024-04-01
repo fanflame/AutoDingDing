@@ -155,8 +155,8 @@ class SettingsFragment : KotlinBaseFragment<FragmentSettingsBinding>() {
             Notification.Builder(requireContext())
         }
         val bitmap = BitmapFactory.decodeResource(resources, R.mipmap.logo_round)
-        builder.setContentTitle("钉钉打卡通知监听已打开")
-            .setContentText("如果通知消失，请重新开启应用")
+        builder.setContentTitle("别动我手机")
+            .setContentText("就是在说你")
             .setWhen(System.currentTimeMillis())
             .setLargeIcon(bitmap)
             .setSmallIcon(R.mipmap.logo_round)

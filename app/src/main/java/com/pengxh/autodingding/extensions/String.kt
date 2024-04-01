@@ -63,9 +63,9 @@ fun String.createMail(toAddress: String): MailInfo {
     mailInfo.password = Constant.PERMISSION_CODE
     mailInfo.toAddress = toAddress // 接收者邮箱
     mailInfo.fromAddress = Constant.MAIL_FROM_ADDRESS
-    mailInfo.subject = "自动打卡通知" // 邮件主题
+    mailInfo.subject = "自动哈没哈没哈通知" // 邮件主题
     val content = if (this == "") {
-        "未监听到打卡成功的通知，请手动登录检查" + System.currentTimeMillis().timestampToDate()
+        "未监听到哈没哈没哈成功的通知，请手动登录检查" + System.currentTimeMillis().timestampToDate()
     } else {
         this
     }
