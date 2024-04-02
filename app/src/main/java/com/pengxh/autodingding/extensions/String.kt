@@ -6,6 +6,7 @@ import com.pengxh.kt.lite.extensions.timestampToDate
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
 
@@ -49,9 +50,27 @@ fun String.diffCurrentMillis(): Long {
     if (this.isBlank()) {
         return 0
     }
-    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA)
+    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
     val date = simpleDateFormat.parse(this)!!
     return abs(System.currentTimeMillis() - date.time)
+}
+
+fun String.tomorrow(): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val calendar= Calendar.getInstance()
+    calendar.time = sdf.parse(this)
+    calendar.add(Calendar.DAY_OF_MONTH,1);
+    sdf.calendar = calendar;
+    return sdf.format(calendar.time)
+}
+
+fun String.addSecond(minute:Int): String {
+    val sdf = SimpleDateFormat("HH:mm")
+    val calendar= Calendar.getInstance()
+    calendar.time = sdf.parse(this)
+    calendar.add(Calendar.SECOND,minute)
+    sdf.calendar = calendar;
+    return SimpleDateFormat("HH:mm:ss").format(calendar.time)
 }
 
 fun String.createMail(toAddress: String): MailInfo {

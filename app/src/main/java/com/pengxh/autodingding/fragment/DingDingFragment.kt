@@ -3,6 +3,7 @@ package com.pengxh.autodingding.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.pengxh.autodingding.adapter.DateTimeAdapter
 import com.pengxh.autodingding.bean.DateTimeBean
 import com.pengxh.autodingding.databinding.FragmentDingdingBinding
 import com.pengxh.autodingding.extensions.openApplication
+import com.pengxh.autodingding.extensions.tomorrow
 import com.pengxh.autodingding.greendao.DateTimeBeanDao
 import com.pengxh.autodingding.ui.AddTimerTaskActivity
 import com.pengxh.autodingding.ui.UpdateTimerTaskActivity
@@ -87,7 +89,11 @@ class DingDingFragment : KotlinBaseFragment<FragmentDingdingBinding>(), Handler.
                         }
                     }
 
-                    override fun onCountDownFinish() {
+                    override fun onCountDownFinish(position: Int) {
+                        dataBeans[position].date = dataBeans[position].date.tomorrow()
+                        dataBeans[position].updateAutoRealTime()
+                        dateTimeBeanDao.update(dataBeans[position])
+                        Log.v("fq","something emit")
                         requireContext().openApplication(Constant.DING_DING)
                     }
                 })
@@ -98,7 +104,7 @@ class DingDingFragment : KotlinBaseFragment<FragmentDingdingBinding>(), Handler.
 
     override fun onPause() {
         super.onPause()
-        dateTimeAdapter?.stopCountDownTimer()
+//        dateTimeAdapter?.stopCountDownTimer()
     }
 
     override fun initEvent() {

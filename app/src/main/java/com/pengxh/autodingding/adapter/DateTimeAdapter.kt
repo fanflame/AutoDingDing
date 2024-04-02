@@ -14,6 +14,7 @@ import com.pengxh.autodingding.R
 import com.pengxh.autodingding.bean.DateTimeBean
 import com.pengxh.autodingding.extensions.diffCurrentMillis
 import com.pengxh.autodingding.extensions.isEarlierThenCurrent
+import java.text.SimpleDateFormat
 
 class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateTimeBean>) :
     RecyclerView.Adapter<DateTimeAdapter.ItemViewHolder>() {
@@ -35,7 +36,7 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val timeBean = dataBeans[position]
         holder.dateView.text = timeBean.date
-        holder.timeView.text = timeBean.time
+        holder.timeView.text = timeBean.autoRealTime
         holder.weekDayView.text = timeBean.weekDay
 
         holder.itemView.setOnClickListener {
@@ -48,7 +49,7 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
             true
         }
 
-        val time = "${timeBean.date} ${timeBean.time}"
+        val time = "${timeBean.date} ${timeBean.autoRealTime}"
         if (time.isEarlierThenCurrent()) {
             holder.countDownTextView.text = "任务已过期"
             holder.countDownTextView.setTextColor(Color.RED)
@@ -62,12 +63,26 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
                 override fun onTick(millisUntilFinished: Long) {
                     holder.countDownProgress.progress =
                         (diffCurrentMillis - millisUntilFinished).toInt()
-
-                    holder.countDownTextView.text = "${millisUntilFinished / 1000}秒后自动哈没哈没哈"
+                    val hour = millisUntilFinished / 1000/60/60
+                    var hourStr = "" + hour
+                    if(hour < 10){
+                        hourStr = "0"+hour
+                    }
+                    var minitue = (millisUntilFinished - hour * 60 * 60 * 1000) / 1000/60;
+                    var minuteStr = "" + minitue
+                    if(minitue < 10){
+                        minuteStr = "0"+minitue
+                    }
+                    var second = (millisUntilFinished/1000) - hour * 60 * 60 - minitue * 60
+                    var secondStr = "" + second
+                    if(second < 10){
+                        secondStr = "0"+second
+                    }
+                    holder.countDownTextView.text = "${hourStr}:${minuteStr}:${secondStr}"
                 }
 
                 override fun onFinish() {
-                    itemClickListener?.onCountDownFinish()
+                    itemClickListener?.onCountDownFinish(position)
                 }
             }.start()
         }
@@ -89,7 +104,7 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
 
         fun onItemLongClick(position: Int)
 
-        fun onCountDownFinish()
+        fun onCountDownFinish(position:Int)
     }
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

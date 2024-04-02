@@ -29,6 +29,7 @@ public class DateTimeBeanDao extends AbstractDao<DateTimeBean, Long> {
         public final static Property Date = new Property(2, String.class, "date", false, "DATE");
         public final static Property Time = new Property(3, String.class, "time", false, "TIME");
         public final static Property WeekDay = new Property(4, String.class, "weekDay", false, "WEEK_DAY");
+        public final static Property AutoRealTime = new Property(5, String.class, "autoRealTime", false, "AUTO_REAL_TIME");
     }
 
 
@@ -48,7 +49,8 @@ public class DateTimeBeanDao extends AbstractDao<DateTimeBean, Long> {
                 "\"UUID\" TEXT," + // 1: uuid
                 "\"DATE\" TEXT," + // 2: date
                 "\"TIME\" TEXT," + // 3: time
-                "\"WEEK_DAY\" TEXT);"); // 4: weekDay
+                "\"WEEK_DAY\" TEXT," + // 4: weekDay
+                "\"AUTO_REAL_TIME\" TEXT);"); // 5: autoRealTime
     }
 
     /** Drops the underlying database table. */
@@ -85,6 +87,11 @@ public class DateTimeBeanDao extends AbstractDao<DateTimeBean, Long> {
         if (weekDay != null) {
             stmt.bindString(5, weekDay);
         }
+ 
+        String autoRealTime = entity.getAutoRealTime();
+        if (autoRealTime != null) {
+            stmt.bindString(6, autoRealTime);
+        }
     }
 
     @Override
@@ -115,6 +122,11 @@ public class DateTimeBeanDao extends AbstractDao<DateTimeBean, Long> {
         if (weekDay != null) {
             stmt.bindString(5, weekDay);
         }
+ 
+        String autoRealTime = entity.getAutoRealTime();
+        if (autoRealTime != null) {
+            stmt.bindString(6, autoRealTime);
+        }
     }
 
     @Override
@@ -129,7 +141,8 @@ public class DateTimeBeanDao extends AbstractDao<DateTimeBean, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // uuid
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // date
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // time
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // weekDay
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // weekDay
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // autoRealTime
         );
         return entity;
     }
@@ -141,6 +154,7 @@ public class DateTimeBeanDao extends AbstractDao<DateTimeBean, Long> {
         entity.setDate(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setTime(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setWeekDay(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setAutoRealTime(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     @Override
