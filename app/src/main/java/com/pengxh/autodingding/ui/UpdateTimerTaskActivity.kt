@@ -56,6 +56,7 @@ class UpdateTimerTaskActivity : KotlinBaseActivity<ActivityUpdateTimerTaskBindin
             dateTimeBean.time = binding.selectedTimeView.text.toString()
             dateTimeBean.weekDay = binding.selectedDateView.text.toString().convertToWeek()
 
+            dateTimeBean.updateAutoRealTime()
             dateTimeBeanDao.update(dateTimeBean)
             finish()
         }

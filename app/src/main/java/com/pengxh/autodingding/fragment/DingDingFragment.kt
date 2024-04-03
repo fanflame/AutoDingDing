@@ -70,6 +70,7 @@ class DingDingFragment : KotlinBaseFragment<FragmentDingdingBinding>(), Handler.
                 binding.emptyView.visibility = View.VISIBLE
             } else {
                 binding.emptyView.visibility = View.GONE
+                dateTimeAdapter?.stopAllCountDownTimer()
                 dateTimeAdapter = DateTimeAdapter(requireContext(), dataBeans)
                 binding.weeklyRecyclerView.adapter = dateTimeAdapter
                 dateTimeAdapter?.setOnItemClickListener(object :

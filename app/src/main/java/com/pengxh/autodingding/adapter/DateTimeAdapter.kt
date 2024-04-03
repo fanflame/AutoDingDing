@@ -21,7 +21,11 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
 
     private val kTag = "DateTimeAdapter"
     private var layoutInflater = LayoutInflater.from(context)
-    private var countDownTimer: CountDownTimer? = null
+    private var countDownTimerMap:HashMap<Int,CountDownTimer>? = null
+
+    init {
+        countDownTimerMap = HashMap();
+    }
 
     override fun getItemCount(): Int = dataBeans.size
 
@@ -59,38 +63,49 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
             holder.countDownTextView.setTextColor(Color.BLUE)
 
             holder.countDownProgress.max = diffCurrentMillis.toInt()
-            countDownTimer = object : CountDownTimer(diffCurrentMillis, 1) {
-                override fun onTick(millisUntilFinished: Long) {
-                    holder.countDownProgress.progress =
-                        (diffCurrentMillis - millisUntilFinished).toInt()
-                    val hour = millisUntilFinished / 1000/60/60
-                    var hourStr = "" + hour
-                    if(hour < 10){
-                        hourStr = "0"+hour
+            if(countDownTimerMap!![position] == null){
+                var countDownTimer = object : CountDownTimer(diffCurrentMillis, 1) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        holder.countDownProgress.progress =
+                            (diffCurrentMillis - millisUntilFinished).toInt()
+                        val hour = millisUntilFinished / 1000/60/60
+                        var hourStr = "" + hour
+                        if(hour < 10){
+                            hourStr = "0"+hour
+                        }
+                        var minitue = (millisUntilFinished - hour * 60 * 60 * 1000) / 1000/60;
+                        var minuteStr = "" + minitue
+                        if(minitue < 10){
+                            minuteStr = "0"+minitue
+                        }
+                        var second = (millisUntilFinished/1000) - hour * 60 * 60 - minitue * 60
+                        var secondStr = "" + second
+                        if(second < 10){
+                            secondStr = "0"+second
+                        }
+                        holder.countDownTextView.text = "${hourStr}:${minuteStr}:${secondStr}"
                     }
-                    var minitue = (millisUntilFinished - hour * 60 * 60 * 1000) / 1000/60;
-                    var minuteStr = "" + minitue
-                    if(minitue < 10){
-                        minuteStr = "0"+minitue
-                    }
-                    var second = (millisUntilFinished/1000) - hour * 60 * 60 - minitue * 60
-                    var secondStr = "" + second
-                    if(second < 10){
-                        secondStr = "0"+second
-                    }
-                    holder.countDownTextView.text = "${hourStr}:${minuteStr}:${secondStr}"
-                }
 
-                override fun onFinish() {
-                    itemClickListener?.onCountDownFinish(position)
-                }
-            }.start()
+                    override fun onFinish() {
+                        itemClickListener?.onCountDownFinish(position)
+                    }
+                }.start()
+                countDownTimerMap!![position] = countDownTimer
+            }
         }
     }
 
-    fun stopCountDownTimer() {
-        countDownTimer?.cancel()
-        Log.d(kTag, "countDownTimer => 已取消")
+    fun stopAllCountDownTimer(){
+        countDownTimerMap!!.forEach {
+            it.value.cancel()
+        }
+        countDownTimerMap!!.clear()
+    }
+
+    fun stopCountDownTimer(position: Int) {
+        countDownTimerMap!![position]?.cancel()
+        countDownTimerMap!!.remove(position)
+        Log.d(kTag, "position countDownTimer => 已取消")
     }
 
     private var itemClickListener: OnItemClickListener? = null
