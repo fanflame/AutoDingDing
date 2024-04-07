@@ -56,7 +56,6 @@ class AddTimerTaskActivity : KotlinBaseActivity<ActivityAddTimerTaskBinding>() {
             bean.uuid = UUID.randomUUID().toString()
             bean.date = binding.selectedDateView.text.toString()
             bean.time = binding.selectedTimeView.text.toString()
-            bean.weekDay = binding.selectedDateView.text.toString().convertToWeek()
 
             bean.updateAutoRealTime()
             dateTimeBeanDao.insert(bean)

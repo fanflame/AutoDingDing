@@ -20,7 +20,7 @@ public class DateTimeBean {
     private String time;
     private String autoRealTime;
 
-    @Generated(hash = 551494236)
+    @Generated(hash = 1928407170)
     public DateTimeBean(Long id, String uuid, String date, String time, String autoRealTime) {
         this.id = id;
         this.uuid = uuid;
