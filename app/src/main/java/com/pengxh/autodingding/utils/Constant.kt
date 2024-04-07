@@ -19,6 +19,6 @@ object Constant {
     const val EMAIL_ADDRESS = "emailAddress"
 
     const val DING_DING = "com.alibaba.android.rimet"
-    const val WECHAT = "com.tencent.wework"
+    const val WECHAT = "com.tencent.mm"
     const val QQ = "com.tencent.mobileqq"
 }

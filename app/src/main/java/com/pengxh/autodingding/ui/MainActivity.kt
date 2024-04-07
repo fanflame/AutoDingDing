@@ -1,10 +1,16 @@
 package com.pengxh.autodingding.ui
 
+import android.content.ActivityNotFoundException
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.pengxh.autodingding.R
@@ -14,10 +20,10 @@ import com.pengxh.autodingding.extensions.initImmersionBar
 import com.pengxh.autodingding.extensions.isAppAvailable
 import com.pengxh.autodingding.fragment.DingDingFragment
 import com.pengxh.autodingding.fragment.SettingsFragment
+import com.pengxh.autodingding.service.NotificationMonitorService
 import com.pengxh.autodingding.utils.Constant
 import com.pengxh.kt.lite.base.KotlinBaseActivity
 import com.pengxh.kt.lite.extensions.show
-import com.pengxh.kt.lite.utils.SaveKeyValues
 import com.pengxh.kt.lite.widget.dialog.AlertMessageDialog
 
 
@@ -37,6 +43,57 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>() {
         return ActivityMainBinding.inflate(layoutInflater)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!NotificationManagerCompat.getEnabledListenerPackages(this).contains(packageName)) {
+            gotoNotificationAccessSetting();
+        }else{
+            toggleNotificationListenerService();
+        }
+    }
+
+    private fun toggleNotificationListenerService() {
+        val pm = packageManager
+        pm.setComponentEnabledSetting(
+            ComponentName(
+                this,
+                NotificationMonitorService::class.java
+            ), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+        )
+        pm.setComponentEnabledSetting(
+            ComponentName(
+                this,
+                NotificationMonitorService::class.java
+            ), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+        )
+    }
+    protected fun gotoNotificationAccessSetting(): Boolean {
+        return try {
+            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            Toast.makeText(this, "请打开通知读取权限", Toast.LENGTH_SHORT).show()
+            startActivity(intent)
+            true
+        } catch (e: ActivityNotFoundException) { //普通情况下找不到的时候需要再特殊处理找一次
+            try {
+                val intent = Intent()
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val cn = ComponentName(
+                    "com.android.settings",
+                    "com.android.settings.Settings\$NotificationAccessSettingsActivity"
+                )
+                intent.component = cn
+                intent.putExtra(":settings:show_fragment", "NotificationAccessSettings")
+                startActivity(intent)
+                return true
+            } catch (e1: Exception) {
+                e1.printStackTrace()
+            }
+            Toast.makeText(this, "对不起，您的手机暂不支持", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+            false
+        }
+    }
     override fun setupTopBarLayout() {
         binding.rootView.initImmersionBar(this, false, R.color.colorAppThemeLight)
         binding.titleView.setTitle("自动")

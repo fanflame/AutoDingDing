@@ -34,7 +34,7 @@
         <activity android:name=".ui.UpdateTimerTaskActivity" />
 
         <service
-            android:name=".service.NotificationMonitorService"
+            android:name="com.pengxh.autodingding.service.NotificationMonitorService"
             android:enabled="true"
             android:exported="false"
             android:label="@string/notification_monitor_service_name"

@@ -2,6 +2,7 @@ package com.pengxh.autodingding.service
 
 import android.app.Notification
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.service.notification.NotificationListenerService
@@ -32,7 +33,6 @@ class NotificationMonitorService : NotificationListenerService() {
 
     private val kTag = "MonitorService"
     private val notificationBeanDao by lazy { BaseApplication.get().daoSession.notificationBeanDao }
-
     /**
      * 有可用的并且和通知管理器连接成功时回调
      */
@@ -47,8 +47,10 @@ class NotificationMonitorService : NotificationListenerService() {
         val extras = sbn.notification.extras
         // 获取接收消息APP的包名
         val packageName = sbn.packageName
-        // 获取接收消息的内容
         val notificationText = extras.getString(Notification.EXTRA_TEXT)
+        Log.d(kTag, "onNotificationPosted "+sbn.packageName)
+        Log.d(kTag, "onNotificationPosted EXTRA_TITLE "+extras.getString(Notification.EXTRA_TITLE))
+        Log.d(kTag, "onNotificationPosted EXTRA_TEXT "+notificationText)
         if (packageName == Constant.DING_DING) {
             //保存通知信息
             val notificationBean = NotificationBean()
@@ -58,14 +60,23 @@ class NotificationMonitorService : NotificationListenerService() {
             notificationBean.notificationMsg = notificationText
             notificationBean.postTime = System.currentTimeMillis().timestampToCompleteDate()
             notificationBeanDao.save(notificationBean)
-        } else if (packageName == Constant.WECHAT || packageName == Constant.QQ) {
-            openApplication(Constant.DING_DING)
+        } else if (packageName.equals(Constant.WECHAT)) {
+            if("梵依然".equals(extras.getString(Notification.EXTRA_TITLE)) && notificationText?.contains("天天发财") == true){
+                val notificationBean = NotificationBean()
+                notificationBean.uuid = UUID.randomUUID().toString()
+                notificationBean.packageName = packageName
+                notificationBean.notificationTitle = extras.getString(Notification.EXTRA_TITLE)
+                notificationBean.notificationMsg = notificationText
+                notificationBean.postTime = System.currentTimeMillis().timestampToCompleteDate()
+                notificationBeanDao.save(notificationBean)
+                openApplication(Constant.DING_DING)
+            }
         } else {
             if (notificationText.isNullOrBlank()) {
                 return
             }
-            if (notificationText.contains("考勤哈没哈没哈")) {
-                sendMail(notificationText)
+            if (notificationText.contains("哈没哈没哈")) {
+//                sendMail(notificationText)
             }
         }
     }
