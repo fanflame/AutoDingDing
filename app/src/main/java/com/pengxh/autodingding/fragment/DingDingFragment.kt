@@ -14,6 +14,7 @@ import com.pengxh.autodingding.databinding.FragmentDingdingBinding
 import com.pengxh.autodingding.extensions.openApplication
 import com.pengxh.autodingding.extensions.tomorrow
 import com.pengxh.autodingding.extensions.wakeUpAndUnlock
+import com.pengxh.autodingding.extensions.wakeupBeforeOpenApp
 import com.pengxh.autodingding.greendao.DateTimeBeanDao
 import com.pengxh.autodingding.ui.AddTimerTaskActivity
 import com.pengxh.autodingding.ui.UpdateTimerTaskActivity
@@ -97,10 +98,7 @@ class DingDingFragment : KotlinBaseFragment<FragmentDingdingBinding>(), Handler.
                         dataBeans[position].updateAutoRealTime()
                         dateTimeBeanDao.update(dataBeans[position])
                         Log.v("fq","something new prepare："+dataBeans[position])
-                        requireContext().wakeUpAndUnlock()
-                        binding.weeklyRecyclerView.postDelayed({
-                            requireContext().openApplication(Constant.DING_DING)
-                        },2000)
+                        requireContext().wakeupBeforeOpenApp(Constant.DING_DING)
                     }
                 })
             }

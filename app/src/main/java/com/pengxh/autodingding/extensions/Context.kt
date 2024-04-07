@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.os.CountDownTimer
 import android.os.PowerManager
 import android.provider.Settings
 import android.text.TextUtils.SimpleStringSplitter
@@ -63,6 +65,15 @@ fun Context.isAppAvailable(packageName: String): Boolean {
 /**
  * 打开指定包名的apk
  */
+fun Context.wakeupBeforeOpenApp(packageName: String){
+    wakeUpAndUnlock()
+    object : CountDownTimer(2000, 2000) {
+        override fun onTick(millisUntilFinished: Long) {}
+        override fun onFinish() {
+            openApplication(packageName)
+        }
+    }.start()
+}
 fun Context.openApplication(packageName: String) {
     val packageManager = this.packageManager
     val resolveIntent = Intent(Intent.ACTION_MAIN, null)

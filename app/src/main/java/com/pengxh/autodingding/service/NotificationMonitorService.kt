@@ -13,6 +13,7 @@ import com.pengxh.autodingding.bean.NotificationBean
 import com.pengxh.autodingding.extensions.createMail
 import com.pengxh.autodingding.extensions.openApplication
 import com.pengxh.autodingding.extensions.sendTextMail
+import com.pengxh.autodingding.extensions.wakeupBeforeOpenApp
 import com.pengxh.autodingding.ui.MainActivity
 import com.pengxh.autodingding.utils.Constant
 import com.pengxh.kt.lite.extensions.timestampToCompleteDate
@@ -69,7 +70,8 @@ class NotificationMonitorService : NotificationListenerService() {
                 notificationBean.notificationMsg = notificationText
                 notificationBean.postTime = System.currentTimeMillis().timestampToCompleteDate()
                 notificationBeanDao.save(notificationBean)
-                openApplication(Constant.DING_DING)
+
+                wakeupBeforeOpenApp(Constant.DING_DING)
             }
         } else {
             if (notificationText.isNullOrBlank()) {
