@@ -92,15 +92,15 @@ class DingDingFragment : KotlinBaseFragment<FragmentDingdingBinding>(), Handler.
                     }
 
                     override fun onCountDownFinish(position: Int) {
+                        Log.v("fq","something emit："+dataBeans[position])
                         dataBeans[position].date = dataBeans[position].date.tomorrow()
                         dataBeans[position].updateAutoRealTime()
                         dateTimeBeanDao.update(dataBeans[position])
-                        Log.v("fq","something emit")
+                        Log.v("fq","something new prepare："+dataBeans[position])
                         requireContext().wakeUpAndUnlock()
                         binding.weeklyRecyclerView.postDelayed({
                             requireContext().openApplication(Constant.DING_DING)
-                        },1000)
-
+                        },2000)
                     }
                 })
             }

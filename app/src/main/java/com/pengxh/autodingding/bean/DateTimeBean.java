@@ -18,16 +18,14 @@ public class DateTimeBean {
     private String uuid;
     private String date;
     private String time;
-    private String weekDay;
     private String autoRealTime;
 
     @Generated(hash = 551494236)
-    public DateTimeBean(Long id, String uuid, String date, String time, String weekDay, String autoRealTime) {
+    public DateTimeBean(Long id, String uuid, String date, String time, String autoRealTime) {
         this.id = id;
         this.uuid = uuid;
         this.date = date;
         this.time = time;
-        this.weekDay = weekDay;
         this.autoRealTime = autoRealTime;
     }
 
@@ -67,14 +65,6 @@ public class DateTimeBean {
         this.time = time;
     }
 
-    public String getWeekDay() {
-        return this.weekDay;
-    }
-
-    public void setWeekDay(String weekDay) {
-        this.weekDay = weekDay;
-    }
-
     public String getAutoRealTime() {
         return autoRealTime;
     }
@@ -89,5 +79,16 @@ public class DateTimeBean {
         Log.v("fq ","time:"+time);
         Log.v("fq ","randValue:"+randValue);
         Log.v("fq ","autoRealTime:"+autoRealTime);
+    }
+
+    @Override
+    public String toString() {
+        return "DateTimeBean{" +
+                "id=" + id +
+                ", uuid='" + uuid + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", autoRealTime='" + autoRealTime + '\'' +
+                '}';
     }
 }

@@ -81,6 +81,7 @@ fun Context.openApplication(packageName: String) {
     val cn = ComponentName(packageName, className)
     intent.component = cn
     this.startActivity(intent)
+    Log.v("fq","try start app launch")
 }
 
 fun Context.wakeUpAndUnlock() {

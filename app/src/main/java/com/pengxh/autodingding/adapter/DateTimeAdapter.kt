@@ -41,7 +41,6 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
         val timeBean = dataBeans[position]
         holder.dateView.text = timeBean.date
         holder.timeView.text = timeBean.autoRealTime
-        holder.weekDayView.text = timeBean.weekDay
 
         holder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(position)
@@ -125,7 +124,6 @@ class DateTimeAdapter(context: Context, private val dataBeans: MutableList<DateT
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var timeView: TextView = itemView.findViewById(R.id.timeView)
         var dateView: TextView = itemView.findViewById(R.id.dateView)
-        var weekDayView: TextView = itemView.findViewById(R.id.weekDayView)
         var countDownTextView: TextView = itemView.findViewById(R.id.countDownTextView)
         var countDownProgress: LinearProgressIndicator = itemView.findViewById(
             R.id.countDownProgress
