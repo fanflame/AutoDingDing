@@ -1,12 +1,16 @@
 package com.pengxh.autodingding.extensions
 
+import android.app.KeyguardManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.Context.KEYGUARD_SERVICE
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.ResolveInfo
+import android.os.PowerManager
 import android.provider.Settings
 import android.text.TextUtils.SimpleStringSplitter
+import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 
 
@@ -77,4 +81,24 @@ fun Context.openApplication(packageName: String) {
     val cn = ComponentName(packageName, className)
     intent.component = cn
     this.startActivity(intent)
+}
+
+fun Context.wakeUpAndUnlock() {
+    Log.d("fq", "wakeUpAndUnlock: 亮屏解锁 start")
+    val powerManager = this.getSystemService(Context.POWER_SERVICE) as PowerManager
+    val screenOn = powerManager.isScreenOn
+    if (!screenOn) {
+        //唤醒屏幕
+        val wakeLock = powerManager.newWakeLock(
+            PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.SCREEN_BRIGHT_WAKE_LOCK,
+            "fq:bright"
+        )
+        wakeLock.acquire(10000)
+        wakeLock.release()
+    }
+    //解锁屏幕
+    val keyguardManager = this.getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+    val keyguardLock = keyguardManager.newKeyguardLock("unLock")
+    keyguardLock.disableKeyguard()
+    Log.d("fq", "wakeUpAndUnlock: 亮屏解锁 end")
 }
